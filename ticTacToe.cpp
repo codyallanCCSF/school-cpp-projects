@@ -20,47 +20,101 @@ using namespace std;
 const int ROWS = 3;
 const int COLS = 3;
 
-const bool gameOver = false;
+bool GAME_OVER = false;
+char player = 'X';
 
+void boardMaker(char board[ROWS][COLS]) {
+/*
+   Creates a 3 x 3 tic-tac-toe board with
+   underscores as placeholders
 
-void initGameBoard(string board[][COLS]) {
-  for(int row = 0; row < ROWS; row++) {
-    for(int col = 0; col < COLS; col++) {
-    board[row][col] = " _ ";
+   Input: char board[ROWS][COLS]
+   Output: None
+*/  
+  // FIXME: INCREASE SIZE OF DEFAULT BOARD
+  for (int i = 0; i < ROWS; i++) {
+    for (int j = 0; j < COLS; j++) {
+      board[i][j] = '-';
     }
   }
-}
+} 
 
-void boardPrinter(string board[][COLS]) {
-  for (int row = 0; row < ROWS; row++) {
-    for (int col = 0; col < COLS; col++) {
-      cout << board[row][col];
+
+void boardPrinter(char board[ROWS][COLS]) {
+/*
+   Takes 2d grid array as input and prints
+   the results of the boardMaker function,
+   updated with results of playerMove()
+
+   Input: char board[ROWS][COLS]
+*/
+
+  for (int i = 0; i < ROWS; i++) {
+    for (int j = 0; j < COLS; j++) {
+      cout << board[i][j];
     }
     cout << endl;
   }
+} 
+
+
+void playerMove(char board[ROWS][COLS], char player) {
+  
+  int row, col;
+  bool invalidMove = true;
+
+  while (invalidMove) {
+    boardPrinter(board);
+    cout << "Player " << player << " make your move!" << '\n';
+    cout << "Enter row and column: (Ex: 1 2) ";
+    cin >> row >> col;
+    row--; col--;
+// FIXME: No space between row and col input check
+    if ((row >= 0) && (row < ROWS) && 
+        (col >= 0) && (col < COLS) &&
+        (board[row][col] == '-')) {
+      
+        board[row][col] = player;
+        invalidMove = false;
+    } else {
+        cout << "Invalid Move! Try again!";
+    }
+  }  
 }
+
+void playGame(char board[ROWS][COLS]) {
+  boardMaker(board);
+
+  bool gameOver = false;
+  char currentPlayer = 'X';
+  
+  while (!gameOver) {
+    playerMove(board, currentPlayer);
+
+    if (currentPlayer == 'X') {
+      currentPlayer = 'O';
+    } else {
+      currentPlayer = 'X';
+    }
+  }
+    
+}
+
 
 void printGreeting() {
 
 }
 
-void getSelection() {
 
-}
 
-void printSelection() {
-
-}
-
-void declareWinner() {
-
+void decideWinner(char board[ROWS][COLS]) {
+  
 }
 
 
 int main() {
-  string gameBoard[ROWS][COLS];
-  initGameBoard(gameBoard);
-  boardPrinter(gameBoard);
+  char gameBoard[ROWS][COLS];
+  playGame(gameBoard);
   return 0;
 
 }
